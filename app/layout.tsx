@@ -9,7 +9,8 @@ const frutiger = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "RFI Advogados - Escritório boutique de Direito Empresarial",
+  title:
+    "RFI Advogados – É uma sociedade de advogados constituída com base no conceito de escritório boutique, adota-se como premissa o atendimento personalizado, ético e de alta qualidade aos clientes, na área do Direito Empresarial.",
   description:
     "A RFI Advogados é um escritório boutique focado em Direito Empresarial, com atendimento personalizado, ético e de alta qualidade, oferecendo suporte jurídico estratégico para empresas em todas as fases do seu desenvolvimento.",
   openGraph: {
