@@ -4,14 +4,45 @@ import { useState, type FormEvent } from "react";
 import { contact } from "@/data/content";
 import Reveal from "./Reveal";
 
-export default function ContactSection() {
-  const [sent, setSent] = useState(false);
+type Status = "idle" | "sending" | "sent" | "error";
 
-  // TODO: integrar com endpoint real de envio (ex: e-mail/CRM) quando definido.
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+export default function ContactSection() {
+  const [status, setStatus] = useState<Status>("idle");
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setSent(true);
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    setStatus("sending");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.get("name"),
+          phone: data.get("phone"),
+          email: data.get("email"),
+          message: data.get("message"),
+        }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      setStatus("sent");
+      form.reset();
+    } catch {
+      setStatus("error");
+    }
   }
+
+  const buttonLabel = {
+    idle: "ENVIE SUA MENSAGEM",
+    sending: "ENVIANDO...",
+    sent: "MENSAGEM ENVIADA",
+    error: "ERRO — TENTE NOVAMENTE",
+  }[status];
 
   return (
     <section id="contato" className="bg-white py-24">
@@ -34,6 +65,7 @@ export default function ContactSection() {
             </label>
             <input
               id="name"
+              name="name"
               required
               placeholder="Escreva o seu nome completo"
               className="mt-2 w-full border-b border-black/20 bg-transparent py-2 outline-none placeholder:text-black/40 focus:border-primary"
@@ -45,6 +77,7 @@ export default function ContactSection() {
             </label>
             <input
               id="phone"
+              name="phone"
               required
               placeholder="Escreva o seu telefone"
               className="mt-2 w-full border-b border-black/20 bg-transparent py-2 outline-none placeholder:text-black/40 focus:border-primary"
@@ -56,6 +89,7 @@ export default function ContactSection() {
             </label>
             <input
               id="email"
+              name="email"
               type="email"
               required
               placeholder="Escreva o seu e-mail"
@@ -68,6 +102,7 @@ export default function ContactSection() {
             </label>
             <textarea
               id="message"
+              name="message"
               required
               rows={3}
               placeholder="Digite a sua mensagem"
@@ -77,9 +112,10 @@ export default function ContactSection() {
 
           <button
             type="submit"
-            className="mt-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium tracking-wide text-white transition-transform hover:scale-105"
+            disabled={status === "sending"}
+            className="mt-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium tracking-wide text-white transition-transform hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
           >
-            {sent ? "MENSAGEM ENVIADA" : "ENVIE SUA MENSAGEM"}
+            {buttonLabel}
           </button>
         </form>
         </Reveal>
