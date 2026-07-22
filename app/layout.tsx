@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const frutiger = localFont({
@@ -28,7 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={frutiger.variable}>
-      <body className="min-h-full antialiased">{children}</body>
+      <body className="min-h-full antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
