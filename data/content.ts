@@ -147,8 +147,9 @@ export const team = {
     { name: "Patrícia Dória", image: "/images/team-patricia.png" },
     { name: "Pamela Fadelli", image: "/images/team-pamela.png" },
     { name: "Vinicius Leite", image: "/images/team-vinicius.png" },
-    { name: "Fernanda Venuto", image: "/images/team-fernanda.png" },
     { name: "Davi Antunes", image: "/images/team-davi.png" },
+    { name: "Rafael Giglio", image: "/images/team-rafael.png" },
+    { name: "Ana Caroline", image: "/images/team-ana-caroline.png" },
   ],
 };
 
